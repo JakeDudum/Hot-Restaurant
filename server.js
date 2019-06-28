@@ -107,6 +107,7 @@ app.delete("/api/reservations/:id", function (req, res) {
       console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
     }
+    main();
     
     main().catch(console.error);
 
