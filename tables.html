@@ -1,0 +1,136 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tables Page</title>
+
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="jumbotron">
+            <h1 class="text-center"><span class="fa fa-fire"></span> Restaurant</h1>
+            <hr>
+            <h2 class="text-center">Current Reservations and Waiting List</h2>
+            <br>
+
+            <div class="text-center">
+                <a href="/reserve"><button class="btn btn-lg btn-danger"><span class="fa fa-credit-card"></span> Make
+                        Reservation</button></a>
+                <a href="/"><button class="btn btn-lg btn-default"><span class="fa fa-home"></span></button></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <!-- Current Tables in Use -->
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Reservations</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul id="tableList" class="list-group"></ul>
+                    </div>
+                </div>
+
+                <!-- Waiting List Card -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4>Wait List</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul id="waitList" class="list-group"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="footer mt-4">
+            <div class="container">
+                <h2>Control Panel</h2>
+                <a href="#"><button class="btn btn-primary"><span class="fa fa-list-alt"></span>Clear
+                        Table</button></a>
+                <a href="/api/tables"><button class="btn btn-primary"><span class="fa fa-list-alt"></span>API
+                        Table Link</button></a>
+                <a href="/api/waitlist"><button class="btn btn-primary"><span class="fa fa-list-alt"></span>API
+                        Wait List</button></a>
+            </div>
+            <br>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript">
+
+        function printTables() {
+            $.get("/api/tables", function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    var listGroupItem = $("<li class='list-group-item'>");
+
+                    listGroupItem.append($("<h1>").text("Table: #" + (i + 1)));
+                    listGroupItem.append($("<h2>").text("name: " + data[i].name));
+                    listGroupItem.append($("<h3>").text("phone: " + data[i].phone));
+                    listGroupItem.append($("<h3>").text("email: " + data[i].email));
+                    listGroupItem.append($("<h3>").text("ID: " + data[i].id));
+
+                    var newButton = $("<button>").text("Remove").attr("id", "remove");
+                    newButton.attr("data-id", data[i].id);
+                    newButton.addClass("btn btn-primary");
+
+                    listGroupItem.append(newButton);
+
+                    $("#tableList").append(listGroupItem);
+                }
+            });
+        }
+
+        function printWaitList() {
+            $.get("/api/waitlist", function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    var listGroupItem = $("<li class='list-group-item'>");
+
+                    listGroupItem.append($("<h2>").text("name: " + data[i].name));
+                    listGroupItem.append($("<h3>").text("phone: " + data[i].phone));
+                    listGroupItem.append($("<h3>").text("email: " + data[i].email));
+                    listGroupItem.append($("<h3>").text("ID: " + data[i].id));
+
+                    $("#waitList").append(listGroupItem);
+                }
+            });
+        }
+
+        $(document).on('click', '#remove', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+
+            $.ajax({
+                url: '/api/reservations/' + id,
+                type: 'DELETE'
+            })
+                .then(function (result) {
+                    console.log(result);
+                    alert("Removing reservation...");
+                    $("#tableList").empty();
+                    $("#waitList").empty();
+                    printTables();
+                    printWaitList();
+                });
+        });
+
+        printTables();
+        printWaitList();
+    </script>
+
+</body>
