@@ -79,9 +79,9 @@
                     var listGroupItem = $("<li class='list-group-item'>");
 
                     listGroupItem.append($("<h1>").text("Table: #" + (i + 1)));
-                    listGroupItem.append($("<h2>").text("name: " + data[i].name));
-                    listGroupItem.append($("<h3>").text("phone: " + data[i].phone));
-                    listGroupItem.append($("<h3>").text("email: " + data[i].email));
+                    listGroupItem.append($("<h2>").text("Name: " + data[i].name));
+                    listGroupItem.append($("<h3>").text("Phone: " + data[i].phone));
+                    listGroupItem.append($("<h3>").text("Email: " + data[i].email));
                     listGroupItem.append($("<h3>").text("ID: " + data[i].id));
 
                     var newButton = $("<button>").text("Remove").attr("id", "remove");
@@ -102,8 +102,8 @@
                     var listGroupItem = $("<li class='list-group-item'>");
 
                     listGroupItem.append($("<h2>").text("name: " + data[i].name));
-                    listGroupItem.append($("<h3>").text("phone: " + data[i].phone));
-                    listGroupItem.append($("<h3>").text("email: " + data[i].email));
+                    listGroupItem.append($("<h3>").text("Phone: " + data[i].phone));
+                    listGroupItem.append($("<h3>").text("Email: " + data[i].email));
                     listGroupItem.append($("<h3>").text("ID: " + data[i].id));
 
                     $("#waitList").append(listGroupItem);
